@@ -27,9 +27,10 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    // const database = client.db("craftDB");
+    const database = client.db("craftDB");
     const craftCollection = database.collection("craft");
 
+      
     // create craft item
     app.post('/craft', async (req, res) => {
       const newCraft = req.body;
@@ -41,6 +42,13 @@ async function run() {
     app.get('/craft', async(req, res) =>{
       const cursor = craftCollection.find();
       const result = await cursor.toArray();
+      res.send(result);
+    })
+    // delete
+    app.delete('/craft/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await craftCollection.deleteOne(query);
       res.send(result);
     })
     /* // get added my craft items
